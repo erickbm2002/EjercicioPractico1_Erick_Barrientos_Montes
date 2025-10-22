@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::section}, 'Modificar Categoría')}">
+<head>
+    <title>Modificar Categoría</title>
+</head>
+<body>
+    <section>
+        <div class="container my-4">
+            
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    
+                    <!-- Título -->
+                    <div class="card">
+                        <div class="card-header bg-warning text-dark">
+                            <h4 class="mb-0">
+                                <i class="bi bi-pencil-square"></i> Modificar Categoría
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            
+                            <form th:action="@{/categoria/guardar}" th:object="${categoria}" method="post">
+                                
+                                <!-- ID oculto -->
+                                <input type="hidden" th:field="*{id}">
+                                
+                                <!-- Nombre -->
+                                <div class="mb-3">
+                                    <label for="nombre" class="form-label">
+                                        Nombre <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="nombre" 
+                                           th:field="*{nombre}" 
+                                           required 
+                                           maxlength="100"
+                                           placeholder="Ej: Ficción, Ciencia, Historia">
+                                </div>
+                                
+                                <!-- Descripción -->
+                                <div class="mb-3">
+                                    <label for="descripcion" class="form-label">
+                                        Descripción
+                                    </label>
+                                    <textarea class="form-control" 
+                                              id="descripcion" 
+                                              th:field="*{descripcion}" 
+                                              rows="3" 
+                                              maxlength="255"
+                                              placeholder="Descripción de la categoría"></textarea>
+                                    <div class="form-text">Máximo 255 caracteres</div>
+                                </div>
+                                
+                                <!-- Información adicional -->
+                                <div class="alert alert-info" th:if="${categoria.libros != null && !categoria.libros.isEmpty()}">
+                                    <i class="bi bi-info-circle"></i> 
+                                    Esta categoría tiene <strong th:text="${categoria.libros.size()}">0</strong> libro(s) asociado(s).
+                                </div>
+                                
+                                <!-- Botones -->
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <a th:href="@{/categoria/listado}" class="btn btn-secondary">
+                                        <i class="bi bi-x-circle"></i> Cancelar
+                                    </a>
+                                    <button type="submit" class="btn btn-warning">
+                                        <i class="bi bi-save"></i> Actualizar
+                                    </button>
+                                </div>
+                                
+                            </form>
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+        </div>
+    </section>
+</body>
+</html>

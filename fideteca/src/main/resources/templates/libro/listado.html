@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::section}, 'Libros')}">
+<head>
+    <title>Libros</title>
+</head>
+<body>
+    <section>
+        <div class="container my-4">
+            
+            <!-- Título y botón nuevo -->
+            <div class="row mb-4">
+                <div class="col-md-8">
+                    <h2><i class="bi bi-book-fill text-primary"></i> Catálogo de Libros</h2>
+                    <p class="text-muted">Total de libros: <span th:text="${totalLibros}">0</span></p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <a th:href="@{/libro/nuevo}" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Nuevo Libro
+                    </a>
+                </div>
+            </div>
+
+            <!-- Tabla de libros -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Título</th>
+                                    <th>Autor</th>
+                                    <th>ISBN</th>
+                                    <th>Categoría</th>
+                                    <th>Precio</th>
+                                    <th class="text-center">Disponible</th>
+                                    <th class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="libro : ${libros}">
+                                    <td th:text="${libro.id}">1</td>
+                                    <td>
+                                        <strong th:text="${libro.titulo}">Título del libro</strong>
+                                        <br>
+                                        <small class="text-muted" th:if="${libro.fechaPublicacion != null}">
+                                            <i class="bi bi-calendar"></i> 
+                                            <span th:text="${#temporals.format(libro.fechaPublicacion, 'dd/MM/yyyy')}">01/01/2024</span>
+                                        </small>
+                                    </td>
+                                    <td th:text="${libro.autor}">Autor</td>
+                                    <td>
+                                        <small th:text="${libro.isbn}">ISBN</small>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-secondary" th:text="${libro.categoria.nombre}">Categoría</span>
+                                    </td>
+                                    <td>
+                                        <strong th:if="${libro.precio != null}">
+                                            ₡<span th:text="${#numbers.formatDecimal(libro.precio, 1, 2)}">0.00</span>
+                                        </strong>
+                                        <span class="text-muted" th:if="${libro.precio == null}">N/A</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span th:if="${libro.disponible}" class="badge bg-success">
+                                            <i class="bi bi-check-circle"></i> Sí
+                                        </span>
+                                        <span th:unless="${libro.disponible}" class="badge bg-danger">
+                                            <i class="bi bi-x-circle"></i> No
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <a th:href="@{/libro/modificar/} + ${libro.id}" 
+                                           class="btn btn-warning btn-sm">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <button type="button" 
+                                                class="btn btn-danger btn-sm"
+                                                data-bs-toggle="modal" 
+                                                th:data-bs-target="'#modalEliminar' + ${libro.id}">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                        
+                                        <!-- Modal de confirmación de eliminación -->
+                                        <div class="modal fade" th:id="'modalEliminar' + ${libro.id}" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header bg-danger text-white">
+                                                        <h5 class="modal-title">
+                                                            <i class="bi bi-exclamation-triangle"></i> Confirmar Eliminación
+                                                        </h5>
+                                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>¿Está seguro de eliminar el libro <strong th:text="${libro.titulo}">título</strong>?</p>
+                                                        <p class="text-muted">Esta acción no se puede deshacer.</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                        <form th:action="@{/libro/eliminar}" method="post" style="display: inline;">
+                                                            <input type="hidden" name="id" th:value="${libro.id}">
+                                                            <button type="submit" class="btn btn-danger">
+                                                                <i class="bi bi-trash"></i> Eliminar
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr th:if="${libros == null || libros.isEmpty()}">
+                                    <td colspan="8" class="text-center text-muted">
+                                        <i class="bi bi-inbox" style="font-size: 3rem;"></i>
+                                        <p>No hay libros registrados</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</body>
+</html>

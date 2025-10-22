@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::section}, ${libro.id != null ? 'Modificar Libro' : 'Nuevo Libro'})}">
+<head>
+    <title>Libro</title>
+</head>
+<body>
+    <section>
+        <div class="container my-4">
+            
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    
+                    <!-- Título -->
+                    <div class="card">
+                        <div class="card-header" th:classappend="${libro.id != null ? 'bg-warning text-dark' : 'bg-primary text-white'}">
+                            <h4 class="mb-0">
+                                <i th:class="${libro.id != null ? 'bi bi-pencil-square' : 'bi bi-plus-circle'}"></i> 
+                                <span th:text="${libro.id != null ? 'Modificar Libro' : 'Nuevo Libro'}">Formulario</span>
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            
+                            <form th:action="@{/libro/guardar}" th:object="${libro}" method="post">
+                                
+                                <!-- ID oculto (solo para edición) -->
+                                <input type="hidden" th:field="*{id}">
+                                
+                                <div class="row">
+                                    
+                                    <!-- Columna Izquierda -->
+                                    <div class="col-md-6">
+                                        
+                                        <!-- Título -->
+                                        <div class="mb-3">
+                                            <label for="titulo" class="form-label">
+                                                <i class="bi bi-book"></i> Título <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="text" 
+                                                   class="form-control" 
+                                                   id="titulo" 
+                                                   th:field="*{titulo}" 
+                                                   required 
+                                                   maxlength="255"
+                                                   placeholder="Ej: Cien Años de Soledad">
+                                        </div>
+                                        
+                                        <!-- Autor -->
+                                        <div class="mb-3">
+                                            <label for="autor" class="form-label">
+                                                <i class="bi bi-person"></i> Autor <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="text" 
+                                                   class="form-control" 
+                                                   id="autor" 
+                                                   th:field="*{autor}" 
+                                                   required 
+                                                   maxlength="200"
+                                                   placeholder="Ej: Gabriel García Márquez">
+                                        </div>
+                                        
+                                        <!-- ISBN -->
+                                        <div class="mb-3">
+                                            <label for="isbn" class="form-label">
+                                                <i class="bi bi-upc-scan"></i> ISBN
+                                            </label>
+                                            <input type="text" 
+                                                   class="form-control" 
+                                                   id="isbn" 
+                                                   th:field="*{isbn}" 
+                                                   maxlength="20"
+                                                   placeholder="Ej: 978-0307474728">
+                                            <div class="form-text">Código Internacional de Libro</div>
+                                        </div>
+                                        
+                                        <!-- Categoría -->
+                                        <div class="mb-3">
+                                            <label for="categoria" class="form-label">
+                                                <i class="bi bi-bookmarks"></i> Categoría <span class="text-danger">*</span>
+                                            </label>
+                                            <select class="form-select" 
+                                                    id="categoria" 
+                                                    th:field="*{categoria.id}" 
+                                                    required>
+                                                <option value="">Seleccione una categoría</option>
+                                                <option th:each="cat : ${categorias}" 
+                                                        th:value="${cat.id}" 
+                                                        th:text="${cat.nombre}">
+                                                    Categoría
+                                                </option>
+                                            </select>
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                    <!-- Columna Derecha -->
+                                    <div class="col-md-6">
+                                        
+                                        <!-- Fecha de Publicación -->
+                                        <div class="mb-3">
+                                            <label for="fechaPublicacion" class="form-label">
+                                                <i class="bi bi-calendar-event"></i> Fecha de Publicación
+                                            </label>
+                                            <input type="date" 
+                                                   class="form-control" 
+                                                   id="fechaPublicacion" 
+                                                   th:field="*{fechaPublicacion}">
+                                        </div>
+                                        
+                                        <!-- Precio -->
+                                        <div class="mb-3">
+                                            <label for="precio" class="form-label">
+                                                <i class="bi bi-currency-dollar"></i> Precio (₡)
+                                            </label>
+                                            <input type="number" 
+                                                   class="form-control" 
+                                                   id="precio" 
+                                                   th:field="*{precio}" 
+                                                   step="0.01" 
+                                                   min="0"
+                                                   placeholder="0.00">
+                                        </div>
+                                        
+                                        <!-- Disponible -->
+                                        <div class="mb-3">
+                                            <label class="form-label">
+                                                <i class="bi bi-check-circle"></i> Disponibilidad
+                                            </label>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" 
+                                                       type="checkbox" 
+                                                       id="disponible" 
+                                                       th:field="*{disponible}">
+                                                <label class="form-check-label" for="disponible">
+                                                    Libro disponible para préstamo
+                                                </label>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                </div>
+                                
+                                <!-- Descripción (ancho completo) -->
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <label for="descripcion" class="form-label">
+                                                <i class="bi bi-file-text"></i> Descripción
+                                            </label>
+                                            <textarea class="form-control" 
+                                                      id="descripcion" 
+                                                      th:field="*{descripcion}" 
+                                                      rows="4"
+                                                      placeholder="Breve descripción o sinopsis del libro"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <hr>
+                                
+                                <!-- Botones -->
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <a th:href="@{/libro/listado}" class="btn btn-secondary">
+                                        <i class="bi bi-x-circle"></i> Cancelar
+                                    </a>
+                                    <button type="submit" class="btn" th:classappend="${libro.id != null ? 'btn-warning' : 'btn-primary'}">
+                                        <i class="bi bi-save"></i> 
+                                        <span th:text="${libro.id != null ? 'Actualizar' : 'Guardar'}">Guardar</span>
+                                    </button>
+                                </div>
+                                
+                            </form>
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+        </div>
+    </section>
+</body>
+</html>

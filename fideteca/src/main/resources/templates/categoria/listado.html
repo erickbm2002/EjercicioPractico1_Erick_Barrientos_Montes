@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::section}, 'Categorías')}">
+<head>
+    <title>Categorías</title>
+</head>
+<body>
+    <section>
+        <div class="container my-4">
+            
+            <!-- Título y botón nuevo -->
+            <div class="row mb-4">
+                <div class="col-md-8">
+                    <h2><i class="bi bi-bookmarks-fill text-primary"></i> Gestión de Categorías</h2>
+                    <p class="text-muted">Total de categorías: <span th:text="${totalCategorias}">0</span></p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCategoria">
+                        <i class="bi bi-plus-circle"></i> Nueva Categoría
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tabla de categorías -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th>Total Libros</th>
+                                    <th class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="categoria : ${categorias}">
+                                    <td th:text="${categoria.id}">1</td>
+                                    <td>
+                                        <strong th:text="${categoria.nombre}">Ficción</strong>
+                                    </td>
+                                    <td th:text="${categoria.descripcion}">Descripción de la categoría</td>
+                                    <td>
+                                        <span class="badge bg-info" th:text="${categoria.libros != null ? categoria.libros.size() : 0}">0</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <a th:href="@{/categoria/modificar/} + ${categoria.id}" 
+                                           class="btn btn-warning btn-sm">
+                                            <i class="bi bi-pencil"></i> Editar
+                                        </a>
+                                        <button type="button" 
+                                                class="btn btn-danger btn-sm"
+                                                data-bs-toggle="modal" 
+                                                th:data-bs-target="'#modalEliminar' + ${categoria.id}">
+                                            <i class="bi bi-trash"></i> Eliminar
+                                        </button>
+                                        
+                                        <!-- Modal de confirmación de eliminación -->
+                                        <div class="modal fade" th:id="'modalEliminar' + ${categoria.id}" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header bg-danger text-white">
+                                                        <h5 class="modal-title">
+                                                            <i class="bi bi-exclamation-triangle"></i> Confirmar Eliminación
+                                                        </h5>
+                                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>¿Está seguro de eliminar la categoría <strong th:text="${categoria.nombre}">nombre</strong>?</p>
+                                                        <p class="text-danger" th:if="${categoria.libros != null && categoria.libros.size() > 0}">
+                                                            <i class="bi bi-exclamation-triangle"></i> 
+                                                            Esta categoría tiene <strong th:text="${categoria.libros.size()}">0</strong> libro(s) asociado(s).
+                                                        </p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                        <form th:action="@{/categoria/eliminar}" method="post" style="display: inline;">
+                                                            <input type="hidden" name="id" th:value="${categoria.id}">
+                                                            <button type="submit" class="btn btn-danger">
+                                                                <i class="bi bi-trash"></i> Eliminar
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr th:if="${categorias == null || categorias.isEmpty()}">
+                                    <td colspan="5" class="text-center text-muted">
+                                        <i class="bi bi-inbox" style="font-size: 3rem;"></i>
+                                        <p>No hay categorías registradas</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Modal para nueva categoría -->
+        <div class="modal fade" id="modalCategoria" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form th:action="@{/categoria/guardar}" method="post">
+                        <div class="modal-header bg-primary text-white">
+                            <h5 class="modal-title">
+                                <i class="bi bi-plus-circle"></i> Nueva Categoría
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label">Nombre <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" required maxlength="100">
+                            </div>
+                            <div class="mb-3">
+                                <label for="descripcion" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" maxlength="255"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Guardar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</body>
+</html>

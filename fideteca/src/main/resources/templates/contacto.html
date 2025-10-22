@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::section}, 'Contacto')}">
+<head>
+    <title>Contacto</title>
+</head>
+<body>
+    <section>
+        <div class="container my-5">
+            
+            <div class="row">
+                
+                <!-- Información de contacto -->
+                <div class="col-md-5 mb-4">
+                    <h2><i class="bi bi-telephone-fill text-primary"></i> Información de Contacto</h2>
+                    <p class="lead">Estamos aquí para ayudarte. Contáctanos por cualquiera de estos medios:</p>
+                    
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="bi bi-geo-alt-fill text-danger"></i> Ubicación</h5>
+                            <p class="card-text">
+                                Universidad FIDÉLITAS<br>
+                                San Pedro, Montes de Oca<br>
+                                San José, Costa Rica
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="bi bi-telephone-fill text-success"></i> Teléfono</h5>
+                            <p class="card-text">
+                                <strong>Principal:</strong> +506 2222-2222<br>
+                                <strong>Extensión:</strong> 1234
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="bi bi-envelope-fill text-primary"></i> Correo Electrónico</h5>
+                            <p class="card-text">
+                                biblioteca@FideTeca.ac.cr<br>
+                                info@FideTeca.ac.cr
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="bi bi-clock-fill text-warning"></i> Horario de Atención</h5>
+                            <p class="card-text">
+                                <strong>Lunes a Viernes:</strong> 7:00 AM - 9:00 PM<br>
+                                <strong>Sábados:</strong> 8:00 AM - 5:00 PM<br>
+                                <strong>Domingos:</strong> Cerrado
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Formulario de contacto -->
+                <div class="col-md-7">
+                    <h2><i class="bi bi-envelope-paper-fill text-primary"></i> Quejas y Sugerencias</h2>
+                    <p class="lead">Tu opinión es importante para nosotros. Déjanos tus comentarios:</p>
+                    
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Formulario de Contacto</h5>
+                        </div>
+                        <div class="card-body">
+                            
+                            <form action="#" method="post">
+                                
+                                <!-- Nombre -->
+                                <div class="mb-3">
+                                    <label for="nombreCliente" class="form-label">
+                                        <i class="bi bi-person"></i> Nombre Completo <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="nombreCliente" 
+                                           name="nombreCliente" 
+                                           required 
+                                           maxlength="150"
+                                           placeholder="Ingrese su nombre completo">
+                                </div>
+                                
+                                <div class="row">
+                                    <!-- Email -->
+                                    <div class="col-md-6 mb-3">
+                                        <label for="email" class="form-label">
+                                            <i class="bi bi-envelope"></i> Correo Electrónico <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="email" 
+                                               class="form-control" 
+                                               id="email" 
+                                               name="email" 
+                                               required 
+                                               maxlength="200"
+                                               placeholder="correo@ejemplo.com">
+                                    </div>
+                                    
+                                    <!-- Teléfono -->
+                                    <div class="col-md-6 mb-3">
+                                        <label for="telefono" class="form-label">
+                                            <i class="bi bi-telephone"></i> Teléfono
+                                        </label>
+                                        <input type="tel" 
+                                               class="form-control" 
+                                               id="telefono" 
+                                               name="telefono" 
+                                               maxlength="30"
+                                               placeholder="8888-7777">
+                                    </div>
+                                </div>
+                                
+                                <!-- Tipo -->
+                                <div class="mb-3">
+                                    <label for="tipo" class="form-label">
+                                        <i class="bi bi-list-ul"></i> Tipo de Mensaje <span class="text-danger">*</span>
+                                    </label>
+                                    <select class="form-select" id="tipo" name="tipo" required>
+                                        <option value="">Seleccione una opción</option>
+                                        <option value="CONSULTA">Consulta</option>
+                                        <option value="SUGERENCIA">Sugerencia</option>
+                                        <option value="QUEJA">Queja</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- Asunto -->
+                                <div class="mb-3">
+                                    <label for="asunto" class="form-label">
+                                        <i class="bi bi-chat-left-text"></i> Asunto
+                                    </label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="asunto" 
+                                           name="asunto" 
+                                           maxlength="200"
+                                           placeholder="Breve descripción del tema">
+                                </div>
+                                
+                                <!-- Mensaje -->
+                                <div class="mb-3">
+                                    <label for="mensaje" class="form-label">
+                                        <i class="bi bi-file-text"></i> Mensaje <span class="text-danger">*</span>
+                                    </label>
+                                    <textarea class="form-control" 
+                                              id="mensaje" 
+                                              name="mensaje" 
+                                              rows="5" 
+                                              required
+                                              placeholder="Escriba aquí su consulta, sugerencia o queja..."></textarea>
+                                </div>
+                                
+                                <!-- Botón enviar -->
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="bi bi-send"></i> Enviar Mensaje
+                                    </button>
+                                </div>
+                                
+                            </form>
+                            
+                        </div>
+                        <div class="card-footer text-muted">
+                            <small>
+                                <i class="bi bi-shield-check"></i> 
+                                Tus datos serán tratados de forma confidencial según nuestra política de privacidad.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+    </section>
+</body>
+</html>

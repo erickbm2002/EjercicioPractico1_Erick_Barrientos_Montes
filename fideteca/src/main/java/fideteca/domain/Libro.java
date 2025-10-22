@@ -1,47 +1,53 @@
 package fideteca.domain;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "libro")
+@Table(name="libro")
 public class Libro implements Serializable {
-    private static final long serialVersionUID = 1L;
 
+    private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @NotBlank
-    @Size(max = 255)
+    @Column(name="id")
+    private Integer id;
+    
+    @Column(nullable=false, length=255)
+    @NotNull
+    @Size(max=255)
     private String titulo;
-
-    @NotBlank
-    @Size(max = 200)
+    
+    @Column(nullable=false, length=200)
+    @NotNull
+    @Size(max=200)
     private String autor;
-
-    @Size(max = 20)
+    
+    @Column(length=20)
+    @Size(max=20)
     private String isbn;
-
+    
     @Column(columnDefinition = "TEXT")
     private String descripcion;
-
+    
     @ManyToOne
-    @JoinColumn(name = "categoria_id")
+    @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
-
+    
+    @Column(name = "fecha_publicacion")
     private LocalDate fechaPublicacion;
-    private boolean disponible;
-
-    @DecimalMin("0.0")
-    @Digits(integer = 10, fraction = 2)
+    
+    @Column(nullable = false)
+    private Boolean disponible = true;
+    
+    @Column(precision = 10, scale = 2)
+    @DecimalMin(value = "0.0", inclusive = true)
     private BigDecimal precio;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }
